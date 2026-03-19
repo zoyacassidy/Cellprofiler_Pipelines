@@ -1,0 +1,429 @@
+CellProfiler Pipeline: http://www.cellprofiler.org
+Version:5
+DateRevision:428
+GitHash:
+ModuleCount:29
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp "[\\\\/]\\.")
+
+Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:['The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:Yes
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:1
+    Metadata extraction method:Extract from image file headers
+    Metadata source:File name
+    Regular expression to extract from file name:^(?P<Plate>.*)_(?P<Well>[A-P][0-9]{2})_s(?P<Site>[0-9])_w(?P<ChannelNumber>[0-9])
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Elsewhere...|
+    Match file and image metadata:[]
+    Use case insensitive matching?:No
+    Metadata file name:None
+    Does cached metadata exist?:Yes
+
+NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:Images matching rules
+    Select the image type:Grayscale image
+    Name to assign these images:DNA
+    Match metadata:[]
+    Image set matching method:Order
+    Set intensity range from:Image metadata
+    Assignments count:3
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D?:No
+    Relative pixel spacing in X:1.0
+    Relative pixel spacing in Y:1.0
+    Relative pixel spacing in Z:1.0
+    Select the rule criteria:and (file does contain "C1")
+    Name to assign these images:Cytoplasm
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "C3")
+    Name to assign these images:Nano
+    Name to assign these objects:Nucleus
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "C2")
+    Name to assign these images:lys
+    Name to assign these objects:Cytoplasm
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:No
+    grouping metadata count:1
+    Metadata category:None
+
+IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Cytoplasm
+    Name the primary objects to be identified:cells
+    Typical diameter of objects, in pixel units (Min,Max):200,800
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Shape
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:0
+    Suppress local maxima that are closer than this minimum allowed distance:5.0
+    Speed up by using lower-resolution image to find local maxima?:No
+    Fill holes in identified objects?:After declumping only
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Global
+    Thresholding method:Otsu
+    Threshold smoothing scale:0.5
+    Threshold correction factor:0.6
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+MeasureObjectSizeShape:[module_num:6|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:cells
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+FilterObjects:[module_num:7|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:cells
+    Name the output objects:filtered_cells
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:No
+    Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:AreaShape_Area
+    Filter using a minimum measurement value?:Yes
+    Minimum value:60000
+    Filter using a maximum measurement value?:No
+    Maximum value:300
+    Allow fuzzy feature matching?:No
+
+Smooth:[module_num:8|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Nano
+    Name the output image:smooth_nano
+    Select smoothing method:Smooth Keeping Edges
+    Calculate artifact diameter automatically?:No
+    Typical artifact diameter:2
+    Edge intensity difference:0.1
+    Clip intensities to 0 and 1?:Yes
+
+Threshold:[module_num:9|svn_version:'Unknown'|variable_revision_number:12|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:smooth_nano
+    Name the output image:Thresholded_nano
+    Threshold strategy:Global
+    Thresholding method:Robust Background
+    Threshold smoothing scale:0
+    Threshold correction factor:0.5
+    Lower and upper bounds on threshold:0.08,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.9
+    Upper outlier fraction:0.00
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:4
+    Thresholding method:Minimum Cross-Entropy
+
+MaskImage:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:smooth_nano
+    Name the output image:mask_threhsold_nano
+    Use objects or an image as a mask?:Image
+    Select object for mask:None
+    Select image for mask:Thresholded_nano
+    Invert the mask?:No
+
+IdentifyPrimaryObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:smooth_nano
+    Name the primary objects to be identified:nano_peaks
+    Typical diameter of objects, in pixel units (Min,Max):2,60
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:4
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:No
+    Fill holes in identified objects?:Never
+    Automatically calculate size of smoothing filter for declumping?:No
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Erase
+    Maximum number of objects:280000
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Global
+    Thresholding method:Robust Background
+    Threshold smoothing scale:0.0
+    Threshold correction factor:0.3
+    Lower and upper bounds on threshold:0.08,1
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:10
+    Lower outlier fraction:0.9
+    Upper outlier fraction:0.00
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:3
+    Thresholding method:Robust Background
+
+MaskObjects:[module_num:12|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to be masked:nano_peaks
+    Name the masked objects:Masked_nano_peaks
+    Mask using a region defined by other objects or by binary image?:Objects
+    Select the masking object:filtered_cells
+    Select the masking image:None
+    Handling of objects that are partially masked:Remove depending on overlap
+    Fraction of object that must overlap:0.95
+    Numbering of resulting objects:Renumber
+    Invert the mask?:No
+
+MaskImage:[module_num:13|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Nano
+    Name the output image:image_nano_objects
+    Use objects or an image as a mask?:Objects
+    Select object for mask:Masked_nano_peaks
+    Select image for mask:None
+    Invert the mask?:No
+
+Threshold:[module_num:14|svn_version:'Unknown'|variable_revision_number:12|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:lys
+    Name the output image:Threshold_lys
+    Threshold strategy:Global
+    Thresholding method:Otsu
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:0.8
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+IdentifyPrimaryObjects:[module_num:15|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:lys
+    Name the primary objects to be identified:lys_objects
+    Typical diameter of objects, in pixel units (Min,Max):5,80
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:Yes
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:No
+    Fill holes in identified objects?:After declumping only
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Global
+    Thresholding method:Otsu
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:0.8
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Minimum Cross-Entropy
+
+MeasureObjectSizeShape:[module_num:16|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:lys_objects
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+RelateObjects:[module_num:17|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:lys_objects
+    Child objects:Masked_nano_peaks
+    Calculate child-parent distances?:Both
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:lys_nano_child
+    Parent name:None
+
+MaskImage:[module_num:18|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:lys
+    Name the output image:mask_lys
+    Use objects or an image as a mask?:Image
+    Select object for mask:filtered_cells
+    Select image for mask:Threshold_lys
+    Invert the mask?:No
+
+MaskImage:[module_num:19|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:mask_lys
+    Name the output image:Mask_lys_2
+    Use objects or an image as a mask?:Objects
+    Select object for mask:filtered_cells
+    Select image for mask:None
+    Invert the mask?:No
+
+RelateObjects:[module_num:20|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:filtered_cells
+    Child objects:Masked_nano_peaks
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:Related_cells_nano
+    Parent name:None
+
+MaskImage:[module_num:21|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:mask_threhsold_nano
+    Name the output image:mask_lys_nano
+    Use objects or an image as a mask?:Image
+    Select object for mask:Masked_nano_peaks
+    Select image for mask:Mask_lys_2
+    Invert the mask?:No
+
+MeasureObjectIntensity:[module_num:22|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:smooth_nano
+    Select objects to measure:Masked_nano_peaks
+
+MeasureObjectIntensity:[module_num:23|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:mask_lys_nano
+    Select objects to measure:filtered_cells
+
+MeasureObjectIntensity:[module_num:24|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:mask_threhsold_nano
+    Select objects to measure:filtered_cells
+
+MeasureColocalization:[module_num:25|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:mask_lys, mask_threhsold_nano
+    Set threshold as percentage of maximum intensity for the images:0
+    Select where to measure correlation:Within objects
+    Select objects to measure:filtered_cells
+    Run all metrics?:Yes
+    Calculate correlation and slope metrics?:Yes
+    Calculate the Manders coefficients?:Yes
+    Calculate the Rank Weighted Colocalization coefficients?:Yes
+    Calculate the Overlap coefficients?:Yes
+    Calculate the Manders coefficients using Costes auto threshold?:Yes
+    Method for Costes thresholding:Faster
+
+GrayToColor:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select a color scheme:RGB
+    Rescale intensity:Yes
+    Select the image to be colored red:image_nano_objects
+    Select the image to be colored green:Mask_lys_2
+    Select the image to be colored blue:Cytoplasm
+    Name the output image:ColorImage
+    Relative weight for the red image:1.0
+    Relative weight for the green image:1.0
+    Relative weight for the blue image:1.0
+    Select the image to be colored cyan:Leave this black
+    Select the image to be colored magenta:Leave this black
+    Select the image to be colored yellow:Leave this black
+    Select the image that determines brightness:Leave this black
+    Relative weight for the cyan image:1.0
+    Relative weight for the magenta image:1.0
+    Relative weight for the yellow image:1.0
+    Relative weight for the brightness image:1.0
+    Hidden:1
+    Image name:None
+    Color:#ff0000
+    Weight:1.0
+
+OverlayOutlines:[module_num:27|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:ColorImage
+    Name the output image:OrigOverlay
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Thick
+    Select outline color:#FFFFFF
+    Select objects to display:filtered_cells
+
+SaveImages:[module_num:28|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay
+    Select method for constructing file names:Sequential numbers
+    Select image name for file prefix:None
+    Enter file prefix:_overlay_
+    Number of digits:3
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:Overlay
+    Saved file format:png
+    Output file location:Default Output Folder|Desktop/Orig_overlay_images_tri_ov_24h
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+ExportToSpreadsheet:[module_num:29|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Comma (",")
+    Add image metadata columns to your object data file?:No
+    Add image file and folder names to your object data file?:Yes
+    Select the measurements to export:Yes
+    Calculate the per-image mean values for object measurements?:No
+    Calculate the per-image median values for object measurements?:No
+    Calculate the per-image standard deviation values for object measurements?:No
+    Output file location:Default Output Folder|Desktop
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:lys_objects|Location_Center_X,lys_objects|Location_Center_Z,lys_objects|Location_Center_Y,lys_objects|Children_Masked_nano_peaks_Count,Masked_nano_peaks|Intensity_MedianIntensity_smooth_nano,Masked_nano_peaks|Intensity_MeanIntensity_smooth_nano,Masked_nano_peaks|Intensity_IntegratedIntensity_smooth_nano,Masked_nano_peaks|Location_Center_X,Masked_nano_peaks|Location_Center_Y,Masked_nano_peaks|Distance_Minimum_lys_objects,Masked_nano_peaks|Distance_Centroid_lys_objects,Masked_nano_peaks|Children_lys_nano_child_Count,Masked_nano_peaks|Children_Related_cells_nano_Count,Masked_nano_peaks|Number_Object_Number,Masked_nano_peaks|Parent_nano_peaks,Masked_nano_peaks|Parent_lys_objects,Masked_nano_peaks|Parent_filtered_cells,filtered_cells|Intensity_StdIntensity_mask_lys_nano,filtered_cells|Intensity_StdIntensity_mask_threhsold_nano,filtered_cells|Intensity_IntegratedIntensity_mask_lys_nano,filtered_cells|Intensity_IntegratedIntensity_mask_threhsold_nano,filtered_cells|Intensity_MeanIntensity_mask_lys_nano,filtered_cells|Intensity_MedianIntensity_mask_lys_nano,filtered_cells|Intensity_MedianIntensity_mask_threhsold_nano,filtered_cells|Parent_cells,filtered_cells|Correlation_K_mask_threhsold_nano_mask_lys,filtered_cells|Correlation_K_mask_lys_mask_threhsold_nano,filtered_cells|Correlation_Costes_mask_lys_mask_threhsold_nano,filtered_cells|Correlation_Costes_mask_threhsold_nano_mask_lys,filtered_cells|Correlation_RWC_mask_lys_mask_threhsold_nano,filtered_cells|Correlation_RWC_mask_threhsold_nano_mask_lys,filtered_cells|Correlation_Manders_mask_lys_mask_threhsold_nano,filtered_cells|Correlation_Manders_mask_threhsold_nano_mask_lys,filtered_cells|Correlation_Correlation_mask_lys_mask_threhsold_nano,filtered_cells|Correlation_Overlap_mask_lys_mask_threhsold_nano,filtered_cells|Number_Object_Number,filtered_cells|Children_Masked_nano_peaks_Count,Image|PathName_lys,Image|PathName_Cytoplasm,Image|PathName_Nano,Image|FileName_Cytoplasm,Image|FileName_Nano,Image|FileName_lys,cells|Number_Object_Number,cells|Children_filtered_cells_Count,nano_peaks|Children_Masked_nano_peaks_Count,nano_peaks|Location_Center_X,nano_peaks|Location_Center_Z,nano_peaks|Location_Center_Y,nano_peaks|Number_Object_Number,Related_cells_nano|Parent_Masked_nano_peaks,Related_cells_nano|Location_Center_X,Related_cells_nano|Location_Center_Z,Related_cells_nano|Location_Center_Y,Related_cells_nano|Number_Object_Number,lys_nano_child|Parent_Masked_nano_peaks,lys_nano_child|Location_Center_Y,lys_nano_child|Location_Center_Z,lys_nano_child|Location_Center_X,lys_nano_child|Number_Object_Number
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:Yes
+    Filename prefix:hek_3h_rep2_
+    Overwrite existing files without warning?:No
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes
